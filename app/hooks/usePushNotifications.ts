@@ -12,6 +12,7 @@
 import { useEffect, useRef, useState } from 'react';
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
+import Constants from 'expo-constants';
 import { Platform } from 'react-native';
 
 // Foreground notification behaviour: show a banner with sound + badge
@@ -101,12 +102,14 @@ async function registerForPushNotificationsAsync(): Promise<string | null> {
   }
 
   try {
-    // NOTE: projectId must be set in app.json → extra.eas.projectId for
-    // production. Without it, getExpoPushTokenAsync() throws in bare
-    // native builds but works in Expo Go preview mode.
-    const token = await Notifications.getExpoPushTokenAsync({
-      projectId: 'YOUR_EAS_PROJECT_ID', // replace with real EAS projectId
-    });
+    // projectId is read from app.json → extra.eas.projectId at runtime.
+    // In Expo Go / development, this value may be undefined and the token
+    // will still be issued using the Expo Go projectId.
+    const projectId =
+      Constants.expoConfig?.extra?.eas?.projectId ?? undefined;
+    const token = await Notifications.getExpoPushTokenAsync(
+      projectId ? { projectId } : undefined
+    );
     return token.data;
   } catch (err) {
     console.warn('[push] Failed to get token:', err);
