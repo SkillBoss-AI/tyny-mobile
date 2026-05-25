@@ -19,8 +19,13 @@
       "infoPlist": {
         "NSAppTransportSecurity": {
           "NSAllowsArbitraryLoads": true
-        }
-      }
+        },
+        "NSFaceIDUsageDescription": "Used to authenticate with Sign in with Apple"
+      },
+      "entitlements": {
+        "com.apple.developer.applesignin": ["Default"]
+      },
+      "usesAppleSignIn": true
     },
     "android": {
       "adaptiveIcon": {

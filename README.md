@@ -141,6 +141,33 @@ eas submit --platform android --profile production
 
 ---
 
+## Auth — Apple Sign In + Google Sign In
+
+Authentication uses **WorkOS AuthKit** via the WebView approach:
+
+- The user lands on `tycoon.us/login` inside the WebView when unauthenticated
+- WorkOS redirects to its hosted AuthKit sign-in page
+- The hosted page shows all enabled social providers
+- After sign-in, the `wos-session` cookie is stored in the WebView cookie jar
+- Push token registration triggers automatically after login is detected
+
+### Enabling Apple Sign In (required for App Store)
+
+1. **WorkOS Dashboard** → AuthKit → Social Connections → enable **Apple**
+2. **Apple Developer Portal** → Identifiers → create a Service ID (`com.tycoon.app.signin`)
+   - Enable "Sign in with Apple"
+   - Return URL: `https://api.workos.com/sso/saml/acs` (check WorkOS docs for exact URL)
+3. The iOS entitlements (`com.apple.developer.applesignin`) and
+   `usesAppleSignIn: true` are already set in `app.json`
+
+### Enabling Google Sign In
+
+1. **WorkOS Dashboard** → AuthKit → Social Connections → enable **Google**
+2. Provide your Google OAuth Client ID + Secret in WorkOS Dashboard
+3. No app.json changes needed — handled entirely in the WebView
+
+---
+
 ## Deep Links
 
 The app handles `tycoon://` scheme URLs.  

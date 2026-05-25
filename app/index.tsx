@@ -12,21 +12,19 @@
  * - `window.__TYCOON_NATIVE__` + `window.__TYCOON_PLATFORM__` flags injected
  *   so the web app can adapt its UI for the native shell
  *
- * Auth note:
- * The user authenticates via the WorkOS sign-in page that loads naturally
- * inside the WebView when they are not logged in. The wos-session cookie is
- * stored in the WebView's cookie jar and reused on every subsequent request.
+ * Auth (WebView approach):
+ * The user authenticates via the WorkOS AuthKit sign-in page that loads
+ * inside the WebView when unauthenticated. The hosted AuthKit page supports
+ * Email, Apple Sign In, and Google Sign In — providers are configured in
+ * the WorkOS Dashboard (no code change needed to add/remove providers).
+ * The wos-session cookie is stored in the WebView cookie jar and reused on
+ * every subsequent request. sharedCookiesEnabled + thirdPartyCookiesEnabled
+ * ensure the session survives app restarts on iOS.
  *
- * TODO (requires WORKOS_CLIENT_ID from vault):
- * Upgrade to a native AuthKit OAuth flow using expo-auth-session so the
- * user sees a proper in-app browser sheet instead of the full web login page.
- * Steps once WORKOS_CLIENT_ID is available:
- *  1. Use AuthRequest from expo-auth-session pointing at
- *     https://api.workos.com/user_management/authorize
- *  2. After receiving the code, POST to /api/mobile/auth/callback (new
- *     backend endpoint) to exchange for a wos-session cookie
- *  3. Inject the session cookie into the WebView via
- *     CookieManager.set(TYCOON_URL, { name: 'wos-session', value: ... })
+ * Push token registration:
+ * After login is detected (nav state leaves /auth/* or workos.com), a small
+ * JS snippet is injected into the WebView to POST /api/mobile/push-token.
+ * The wos-session cookie travels with that fetch automatically.
  */
 
 import { StatusBar } from 'expo-status-bar';
