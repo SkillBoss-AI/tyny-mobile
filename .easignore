@@ -1,0 +1,33 @@
+# EAS Build ignore file
+# Files and directories listed here will not be included in EAS builds
+
+# Development artifacts
+node_modules/
+.git/
+
+# Environment and secrets
+.env
+.env.local
+.env.*.local
+google-service-account.json
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Test files
+__tests__/
+*.test.ts
+*.test.tsx
+*.spec.ts
+*.spec.tsx
+
+# Documentation
+README.md
+CHANGELOG.md
