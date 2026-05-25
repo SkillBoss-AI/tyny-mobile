@@ -29,7 +29,13 @@
       },
       "package": "com.tycoon.app",
       "versionCode": 1,
-      "permissions": ["INTERNET", "ACCESS_NETWORK_STATE"]
+      "permissions": [
+        "INTERNET",
+        "ACCESS_NETWORK_STATE",
+        "RECEIVE_BOOT_COMPLETED",
+        "VIBRATE"
+      ],
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "bundler": "metro",
@@ -38,7 +44,18 @@
     },
     "plugins": [
       "expo-router",
-      "expo-splash-screen"
+      "expo-splash-screen",
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/images/notification-icon.png",
+          "color": "#000000",
+          "sounds": [],
+          "mode": "production",
+          "androidMode": "default",
+          "androidCollapsedTitle": "#{unread_notifications} new interactions"
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true
